@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,10 +24,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
             top: 0,
             left: 0,
             right: 0,
-            child: Image.asset(
-              widget.destination.destinationImage,
-              fit: BoxFit.cover,
-              height: Get.size.height / 2 + 50,
+            child: Hero(
+              tag: widget.destination.destinationImage,
+              child: Image.asset(
+                widget.destination.destinationImage,
+                fit: BoxFit.cover,
+                height: Get.size.height / 2 + 50,
+              ),
             ),
           ),
           Positioned(
@@ -36,36 +40,40 @@ class _DetailsScreenState extends State<DetailsScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.7)),
-                  height: 40,
-                  width: 40,
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.chevron_left_rounded,
-                      color: Colors.black,
+                ElasticIn(
+                  child: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.7)),
+                    height: 40,
+                    width: 40,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.chevron_left_rounded,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
                     ),
-                    onPressed: () {
-                      Get.back();
-                    },
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.7)),
-                  height: 40,
-                  width: 40,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.favorite_rounded,
-                      color: widget.destination.isFavourite ? Colors.red : Colors.black,
-                      size: 20,
+                ElasticIn(
+                  child: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.7)),
+                    height: 40,
+                    width: 40,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.favorite_rounded,
+                        color: widget.destination.isFavourite ? Colors.red : Colors.black,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          widget.destination.isFavourite = !widget.destination.isFavourite;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      setState(() {
-                        widget.destination.isFavourite = !widget.destination.isFavourite;
-                      });
-                    },
                   ),
                 )
               ],
@@ -156,11 +164,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              widget.destination.destinationDescription,
-                              maxLines: 12,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                            SlideInDown(
+                              child: Text(
+                                widget.destination.destinationDescription,
+                                maxLines: 12,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                              ),
                             ),
                           ],
                         ),

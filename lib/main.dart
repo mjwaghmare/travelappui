@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      maintainBottomViewPadding: true,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        extendBodyBehindAppBar: true,
         backgroundColor: const Color(0xfff2f2f2),
         body: SingleChildScrollView(
           child: Padding(
@@ -75,31 +79,37 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Discover \nNew Destination.',
-                  style: TextStyle(fontSize: 22),
+                SlideInDown(
+                  delay: const Duration(microseconds: 100),
+                  child: const Text(
+                    'Discover \nNew Destination.',
+                    style: TextStyle(fontSize: 22),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: const ListTile(
-                    minLeadingWidth: 0,
-                    leading: Icon(Icons.search_rounded, color: Colors.grey),
-                    title: TextField(
-                      style: TextStyle(fontSize: 20),
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        disabledBorder: InputBorder.none,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(
-                          bottom: 11,
-                          top: 6,
+                ElasticIn(
+                  delay: const Duration(microseconds: 100),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: const ListTile(
+                      minLeadingWidth: 0,
+                      leading: Icon(Icons.search_rounded, color: Colors.grey),
+                      title: TextField(
+                        style: TextStyle(fontSize: 20),
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          hintText: 'Search',
+                          disabledBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(
+                            bottom: 11,
+                            top: 6,
+                          ),
                         ),
                       ),
                     ),
@@ -118,7 +128,8 @@ class _HomePageState extends State<HomePage> {
                     itemCount: Category.category.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
-                      return CategoryCard(Category.category[index]);
+                      return ElasticInLeft(
+                          delay: const Duration(microseconds: 300), child: CategoryCard(Category.category[index]));
                     },
                   ),
                 ),
@@ -134,7 +145,9 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     itemCount: Destinations.destinations.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return LocationCard(Destinations.destinations[index]);
+                      return ElasticInLeft(
+                          delay: const Duration(microseconds: 500),
+                          child: LocationCard(Destinations.destinations[index]));
                     },
                   ),
                 ),
@@ -170,10 +183,13 @@ class LocationCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.6,
               child: Stack(
                 children: [
-                  Image.asset(
-                    destination.destinationImage,
-                    fit: BoxFit.cover,
-                    height: MediaQuery.of(context).size.width * 0.9,
+                  Hero(
+                    tag: destination.destinationImage,
+                    child: Image.asset(
+                      destination.destinationImage,
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.width * 0.9,
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
